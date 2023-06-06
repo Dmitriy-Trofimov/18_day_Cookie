@@ -1,0 +1,260 @@
+* {
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+    width: 600px;
+    height: 435px;
+    border: 1px solid black;
+    margin: 15px auto 0;
+}
+
+.search-section {
+    display: flex;
+    position: relative;
+}
+
+.search-input {
+    border: none;
+    height: 45px;
+    width: 544px;
+    padding: 11px 0 13px 16px;
+}
+
+.btn-search {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: transparent;
+    position: absolute;
+    top: 8px;
+    right: 11px;
+}
+
+.btn-search:hover {
+    transform: scale(1.1, 1.1);
+    cursor: pointer;
+}
+
+.finded-parametres {
+    border-top: 1px solid black;
+    display: flex;
+}
+
+.weather-1-tab,
+.weather-2-tab {
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    width: 297px;
+    height: 344px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 0 17px; 
+}
+
+.tabs-container {
+    height: 345px;
+    overflow: hidden;
+}
+
+.weather-now,
+.city-now {
+    display: inline-block;
+}
+
+.weather-now {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 70px;
+    line-height: 82px;
+    margin: 0 0 17px 12px;
+}
+
+.cloud {
+    margin: 0 auto;
+}
+
+.like-img:hover {
+    transform: scale(1.1, 1.1);
+}
+
+.month-and-like {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 26px;
+}
+
+.city-now {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    margin: 20px 0 0 12px;
+}
+.tabs {
+    display: flex;
+    width: 298px;
+}
+
+.weather-2-tab {
+    padding: 33px 0 46px 15px;
+}
+
+.details-title,
+.parameter-temperature,
+.parameter-Feels-like,
+.parameter-weather,
+.parameter-sunrise,
+.parameter-sunset,
+.forecast-title {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    color: #000000;
+}
+
+.weather-parameters {
+    list-style: none;
+}
+
+.weather-parameter {
+    margin-bottom: 12px;
+}
+
+.weather-3-tab {
+    border-right: 1px solid black;
+    border-bottom:  1px solid black;
+    overflow-y: scroll;
+    min-height: 345px;
+}
+
+.forecast-section {
+    padding: 0 auto;
+    height: 260px;
+    margin-bottom: 9px;
+}
+
+.forecast-title {
+    padding: 33px 0 7px 18px;
+}
+
+.forecast-parametres {
+    border: 1px solid black;
+    width: 265px;
+    height: 120px;
+    margin: 0 auto 9px auto;
+    padding: 6px 12px 13px 8px;
+}
+
+.forecast-date, 
+.forecast-temperature-precipitation,
+.forecast-feels-like {
+    display: flex;
+    justify-content: space-between;
+}
+
+.forecast-date {
+    margin-bottom: 38px;
+}
+
+.tab-naw,
+.tab-details,
+.tab-forecast {
+    width: 100px;
+    height: 42px;
+    border-right: 1px solid black;
+    padding: 12px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.tab-naw:hover,
+.tab-details:hover,
+.tab-forecast:hover {
+    background-color: rgb(219, 219, 219);
+}
+
+.tab-naw-text,
+.tab-details-text,
+.tab-forecast-text {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    text-decoration: none;
+    color: #000;
+}
+
+
+.added-citys_header {
+    height: 68px;
+    width: 300px;
+    border-bottom: 1px solid black;
+    padding: 37px 96px 3px 18px;
+}
+
+.added-citys_title {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+}
+
+.added-cities_list {
+    height: 300px;
+    padding: 15px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+}
+
+.added-city_container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    width: 200px;
+    padding: 5px;
+    margin: 0;
+    position: relative;
+}
+
+.added-city_container:hover {
+    background-color: #f4f1f1;
+}
+
+.added-city_name {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+}
+
+.added-city_name:hover {
+    cursor: pointer;
+}
+
+.button-delete {
+    position: absolute;
+    top: 7px;
+    right: 5px;
+    width: 25px;
+    height: 25px;
+    border: none;
+    background-color: transparent;
+}
+
+.button-delete:hover {
+border: 2px rgb(211, 145, 145) solid;
+}
+
+.img-delete-city {
+    padding: 2px 6px 0 0;
+}
+
+
+

@@ -1,0 +1,243 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, sans-serif;
+}
+
+.main {
+  width: 600px;
+  height: 435px;
+  border: 1px solid #000;
+  margin: 15px auto 0;
+}
+
+.search-section {
+  display: flex;
+  position: relative;
+}
+
+.search-input {
+  height: 45px;
+  width: 544px;
+  border: none;
+  padding: 11px 0 13px 16px;
+}
+
+.btn-search {
+  width: 30px;
+  height: 30px;
+  background-color: #0000;
+  border: none;
+  position: absolute;
+  top: 8px;
+  right: 11px;
+}
+
+.btn-search:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.finded-parametres {
+  border-top: 1px solid #000;
+  display: flex;
+}
+
+.weather-1-tab, .weather-2-tab {
+  width: 297px;
+  height: 344px;
+  border-bottom: 1px solid #000;
+  border-right: 1px solid #000;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 0 17px;
+  display: flex;
+}
+
+.tabs-container {
+  height: 345px;
+  overflow: hidden;
+}
+
+.weather-now, .city-now {
+  display: inline-block;
+}
+
+.weather-now {
+  margin: 0 0 17px 12px;
+  font-size: 70px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 82px;
+}
+
+.cloud {
+  margin: 0 auto;
+}
+
+.like-img:hover {
+  transform: scale(1.1);
+}
+
+.month-and-like {
+  justify-content: space-between;
+  margin-right: 26px;
+  display: flex;
+}
+
+.city-now {
+  margin: 20px 0 0 12px;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.tabs {
+  width: 298px;
+  display: flex;
+}
+
+.weather-2-tab {
+  padding: 33px 0 46px 15px;
+}
+
+.details-title, .parameter-temperature, .parameter-Feels-like, .parameter-weather, .parameter-sunrise, .parameter-sunset, .forecast-title {
+  color: #000;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.weather-parameters {
+  list-style: none;
+}
+
+.weather-parameter {
+  margin-bottom: 12px;
+}
+
+.weather-3-tab {
+  min-height: 345px;
+  border-bottom: 1px solid #000;
+  border-right: 1px solid #000;
+  overflow-y: scroll;
+}
+
+.forecast-section {
+  height: 260px;
+  margin-bottom: 9px;
+  padding: 0 auto;
+}
+
+.forecast-title {
+  padding: 33px 0 7px 18px;
+}
+
+.forecast-parametres {
+  width: 265px;
+  height: 120px;
+  border: 1px solid #000;
+  margin: 0 auto 9px;
+  padding: 6px 12px 13px 8px;
+}
+
+.forecast-date, .forecast-temperature-precipitation, .forecast-feels-like {
+  justify-content: space-between;
+  display: flex;
+}
+
+.forecast-date {
+  margin-bottom: 38px;
+}
+
+.tab-naw, .tab-details, .tab-forecast {
+  width: 100px;
+  height: 42px;
+  border-right: 1px solid #000;
+  justify-content: center;
+  padding: 12px 0;
+  display: flex;
+}
+
+.tab-naw:hover, .tab-details:hover, .tab-forecast:hover {
+  background-color: #dbdbdb;
+}
+
+.tab-naw-text, .tab-details-text, .tab-forecast-text {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px;
+  text-decoration: none;
+}
+
+.added-citys_header {
+  height: 68px;
+  width: 300px;
+  border-bottom: 1px solid #000;
+  padding: 37px 96px 3px 18px;
+}
+
+.added-citys_title {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.added-cities_list {
+  height: 300px;
+  flex-direction: column;
+  padding: 15px;
+  display: flex;
+  overflow-y: scroll;
+}
+
+.added-city_container {
+  width: 200px;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  margin: 0;
+  padding: 5px;
+  display: flex;
+  position: relative;
+}
+
+.added-city_container:hover {
+  background-color: #f4f1f1;
+}
+
+.added-city_name {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.added-city_name:hover {
+  cursor: pointer;
+}
+
+.button-delete {
+  width: 25px;
+  height: 25px;
+  background-color: #0000;
+  border: none;
+  position: absolute;
+  top: 7px;
+  right: 5px;
+}
+
+.button-delete:hover {
+  border: 2px solid #d39191;
+}
+
+.img-delete-city {
+  padding: 2px 6px 0 0;
+}
+
+/*# sourceMappingURL=index.78cc32dd.css.map */
