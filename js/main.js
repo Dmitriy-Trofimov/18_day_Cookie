@@ -145,55 +145,38 @@ function addLocation(i) {
             render()
         });
 
+
         // Отобразить параметры по клику на город страва
-        newCityName.addEventListener('click', showCityParameter);
+        newCityName.addEventListener('click', function() {
 
-        // showCityParameter(i)
+            // alert(qqq)
+            cityNow.textContent = list[i].name;
+            temperatureNow.textContent = Math.round(list[i].main.temp - 273) + '°';
 
-        console.log(i);
-        
+            lastCheckedCity.push(list[i]);
+            lastCheckedForecast.push(listForecast[i]);
+
+            // Таб с деталями
+            detailsTitle.textContent = lastCheckedCity[lastCheckedCity.length - 1].name;
+            parameterTemperature.textContent = `Temperature: ${Math.round(lastCheckedCity[lastCheckedCity.length - 1].main.temp - 273) + '°'}`;
+            parameterFeelsLike.textContent = `Feels like: ${Math.round(lastCheckedCity[lastCheckedCity.length - 1].main.feels_like  - 273) + '°'}`;
+            parameterWeather.textContent = `Weather: ${lastCheckedCity[lastCheckedCity.length - 1].weather[0].description}`;
+
+            let sunriseTime = lastCheckedCity[lastCheckedCity.length - 1].sys.sunrise;
+            let sunriseConverted =  format(new Date(1000 * sunriseTime), 'kk:mm');
+            parameterSunrise.textContent = `Sunset: ${sunriseConverted}`;
+
+            let sunsetTime = lastCheckedCity[lastCheckedCity.length - 1].sys.sunset;
+            let sunsetConverted = format(new Date(1000 * sunsetTime), 'kk:mm');
+            parameterSunset.textContent = `Sunset: ${sunsetConverted}`;
+
+            addCheckedStorage()
+            addCheckedForecast()   
+            clearOldForecast()         
+            showForecast()
+        });
     }
-    return i;
-
 }
-
-console.log(addLocation());
-
-function showCityParameter(i) {
-
-    alert('dfdfd')
-    cityNow.textContent = list[i].name;
-    temperatureNow.textContent = Math.round(list[i].main.temp - 273) + '°';
-
-    lastCheckedCity.push(list[i]);
-    lastCheckedForecast.push(listForecast[i]);
-
-
-    // Таб с деталями
-
-    detailsTitle.textContent = lastCheckedCity[lastCheckedCity.length - 1].name;
-    parameterTemperature.textContent = `Temperature: ${Math.round(lastCheckedCity[lastCheckedCity.length - 1].main.temp - 273) + '°'}`;
-    parameterFeelsLike.textContent = `Feels like: ${Math.round(lastCheckedCity[lastCheckedCity.length - 1].main.feels_like  - 273) + '°'}`;
-    parameterWeather.textContent = `Weather: ${lastCheckedCity[lastCheckedCity.length - 1].weather[0].description}`;
-
-    let sunriseTime = lastCheckedCity[lastCheckedCity.length - 1].sys.sunrise;
-    let sunriseConverted =  format(new Date(1000 * sunriseTime), 'kk:mm');
-    parameterSunrise.textContent = `Sunset: ${sunriseConverted}`;
-
-    let sunsetTime = lastCheckedCity[lastCheckedCity.length - 1].sys.sunset;
-    let sunsetConverted = format(new Date(1000 * sunsetTime), 'kk:mm');
-    parameterSunset.textContent = `Sunset: ${sunsetConverted}`;
-
-    addCheckedStorage()
-    addCheckedForecast()   
-    clearOldForecast()         
-    showForecast()
-}
-
-
-
-
-
 
 
 
@@ -203,11 +186,9 @@ function showForecast() {
 
     forecastTitle.textContent = lastCheckedForecast[lastCheckedForecast.length - 1].city.name; 
 
-
     const forecastParametres = document.createElement('div');
     forecastParent.appendChild(forecastParametres);
     forecastParametres.classList.add('forecast-parametres'); 
-
 
     const forecastDate = document.createElement('div');
     forecastParametres.appendChild(forecastDate);
@@ -227,7 +208,6 @@ function showForecast() {
 
     const futureTimeConverted = format(new Date(1000 * futureforecastDate), 'kk:mm');;
     futureTime.textContent = futureTimeConverted;
-
 
     const forecastTemperaturePrecipitation = document.createElement('div');
     forecastParametres.appendChild(forecastTemperaturePrecipitation);
@@ -330,19 +310,17 @@ function showSavedParavetres() {
 showSavedParavetres()
 
 
-
-
 // Функция проверка
 
-let check = document.querySelector('.added-citys_title');
-function checkStorage() {
-    console.log(localStorage);
-    console.log(list);
+// let check = document.querySelector('.added-citys_title');
+// function checkStorage() {
+//     console.log(localStorage);
+//     console.log(list);
     // console.log(lastCheckedCity);
     // console.log(listForecast);
     // console.log(lastCheckedForecast);
     // localStorage.clear()
-}
-check.addEventListener('click', checkStorage);
+// }
+// check.addEventListener('click', checkStorage);
 
 
