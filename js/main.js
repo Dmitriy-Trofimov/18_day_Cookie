@@ -1,8 +1,6 @@
 import { format } from 'date-fns'
 
-let cityQuery = document.querySelector('.search-form');
-let searchInput = document.querySelector('.search-input');
-let likeButton = document.querySelector('.like-img');
+
 let list = [];
 let lastCheckedCity = [];
 let listForecast = [];
@@ -13,6 +11,11 @@ likeButton.addEventListener('click', render);
 
 
 // Хранилище имен (Модуль)
+let cityQuery = document.querySelector('.search-form');
+let searchInput = document.querySelector('.search-input');
+let likeButton = document.querySelector('.like-img');
+
+
 const cityNow = document.querySelector('.city-now');
 const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f';
 const serverUrlWeather = 'http://api.openweathermap.org/data/2.5/weather';
@@ -55,6 +58,7 @@ function findCity() {
         } else {
             cityNow.textContent = weatherNow.name;  
             list.push(weatherNow);
+            searchInput.value = clearInput;
         }
     })
     .catch(console.error);
@@ -78,7 +82,6 @@ function findForecast(urlForecast){
             throw new Error('Ошибка сервера №401');
         } else {
             listForecast.push(weatherForecast);
-            searchInput.value = clearInput;
         }
     })
     .catch(console.error);
@@ -91,8 +94,6 @@ function render() {
     addListStorage()
     addForecastStorage()
 }
-
-
 
 
 function clearOldCitys() {  
@@ -114,7 +115,7 @@ function clearOldForecast() {
 }
 
 
-function addLocation(i) {    
+function addLocation() {    
 
     for (let i=0; i<list.length; i++) {
 
@@ -149,7 +150,6 @@ function addLocation(i) {
         // Отобразить параметры по клику на город страва
         newCityName.addEventListener('click', function() {
 
-            // alert(qqq)
             cityNow.textContent = list[i].name;
             temperatureNow.textContent = Math.round(list[i].main.temp - 273) + '°';
 
