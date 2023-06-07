@@ -558,15 +558,11 @@ function hmrAccept(bundle, id) {
 
 },{}],"bDbGG":[function(require,module,exports) {
 var _dateFns = require("date-fns");
-let cityQuery = document.querySelector(".search-form");
-let searchInput = document.querySelector(".search-input");
-let likeButton = document.querySelector(".like-img");
 let list = [];
 let lastCheckedCity = [];
 let listForecast = [];
 let lastCheckedForecast = [];
-cityQuery.addEventListener("submit", findCity);
-likeButton.addEventListener("click", render);
+// Список городов хварнить в Set()
 // Хранилище имен (Модуль)
 const cityNow = document.querySelector(".city-now");
 const apiKey = "f660a2fb1e4bad108d6160b7f58c555f";
@@ -583,11 +579,15 @@ const parameterSunrise = document.querySelector(".parameter-sunrise");
 const parameterSunset = document.querySelector(".parameter-sunset");
 const forecastTitle = document.querySelector(".forecast-title");
 const forecastParent = document.querySelector(".forecast-section");
+let cityQuery = document.querySelector(".search-form");
+let searchInput = document.querySelector(".search-input");
+let likeButton = document.querySelector(".like-img");
 ///////////////////////////
+cityQuery.addEventListener("submit", findCity);
+likeButton.addEventListener("click", render);
 function findCity() {
     const cityName = document.querySelector(".search-input").value;
     const urlWeather = `${serverUrlWeather}?q=${cityName}&appid=${apiKey}`;
-    const urlForecast = `${serverUrlForecast}?q=${cityName}&appid=${apiKey}`;
     fetch(urlWeather).then((responce)=>responce.json()).then((weatherNow)=>{
         if (weatherNow.cod === "404") {
             searchInput.value = clearInput;
@@ -603,11 +603,14 @@ function findCity() {
         } else {
             cityNow.textContent = weatherNow.name;
             list.push(weatherNow);
+            searchInput.value = clearInput;
+        // + отобразить температуру города
         }
     }).catch(console.error);
-    findForecast(urlForecast);
+    findForecast(cityName);
 }
-function findForecast(urlForecast) {
+function findForecast(cityName) {
+    const urlForecast = `${serverUrlForecast}?q=${cityName}&appid=${apiKey}`;
     fetch(urlForecast).then((responce)=>responce.json()).then((weatherForecast)=>{
         if (weatherForecast.cod === "404") {
             searchInput.value = clearInput;
@@ -617,10 +620,7 @@ function findForecast(urlForecast) {
             searchInput.value = clearInput;
             alert("Что то пошло не так");
             throw new Error("Ошибка сервера №401");
-        } else {
-            listForecast.push(weatherForecast);
-            searchInput.value = clearInput;
-        }
+        } else listForecast.push(weatherForecast);
     }).catch(console.error);
 }
 function render() {
@@ -640,7 +640,7 @@ function clearOldForecast() {
     if (deleteOldForecast) deleteOldForecast.forEach((OldForecast)=>OldForecast.remove());
     else return;
 }
-function addLocation(i) {
+function addLocation() {
     for(let i = 0; i < list.length; i++){
         // Добавить город справа
         const newCityContainer = document.createElement("div");
@@ -664,7 +664,6 @@ function addLocation(i) {
         });
         // Отобразить параметры по клику на город страва
         newCityName.addEventListener("click", function() {
-            // alert(qqq)
             cityNow.textContent = list[i].name;
             temperatureNow.textContent = Math.round(list[i].main.temp - 273) + "\xb0";
             lastCheckedCity.push(list[i]);
@@ -766,18 +765,19 @@ function showSavedParavetres() {
     if (lastCheckedForecast.length != 0) showForecast();
     else return;
 }
-showSavedParavetres() // Функция проверка
- // let check = document.querySelector('.added-citys_title');
- // function checkStorage() {
- //     console.log(localStorage);
- //     console.log(list);
- // console.log(lastCheckedCity);
- // console.log(listForecast);
- // console.log(lastCheckedForecast);
- // localStorage.clear()
- // }
- // check.addEventListener('click', checkStorage);
-;
+showSavedParavetres();
+// Функция проверка
+// checkStorage()
+let check = document.querySelector(".added-citys_title");
+function checkStorage() {
+// console.log(localStorage);
+// console.log(list);
+// console.log(lastCheckedCity);
+// console.log(listForecast);
+// console.log(lastCheckedForecast);
+// localStorage.clear()
+}
+check.addEventListener("click", checkStorage);
 
 },{"date-fns":"9yHCA"}],"9yHCA":[function(require,module,exports) {
 // This file is generated automatically by `scripts/build/indices.ts`. Please, don't change it.

@@ -1,21 +1,13 @@
 import { format } from 'date-fns'
 
-
 let list = [];
 let lastCheckedCity = [];
 let listForecast = [];
 let lastCheckedForecast = [];
 
-cityQuery.addEventListener('submit', findCity);
-likeButton.addEventListener('click', render);
-
+// Список городов хварнить в Set()
 
 // Хранилище имен (Модуль)
-let cityQuery = document.querySelector('.search-form');
-let searchInput = document.querySelector('.search-input');
-let likeButton = document.querySelector('.like-img');
-
-
 const cityNow = document.querySelector('.city-now');
 const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f';
 const serverUrlWeather = 'http://api.openweathermap.org/data/2.5/weather';
@@ -32,14 +24,19 @@ const parameterSunrise = document.querySelector('.parameter-sunrise');
 const parameterSunset = document.querySelector('.parameter-sunset');
 const forecastTitle = document.querySelector('.forecast-title');
 const forecastParent = document.querySelector('.forecast-section');
+
+let cityQuery = document.querySelector('.search-form');
+let searchInput = document.querySelector('.search-input');
+let likeButton = document.querySelector('.like-img');
 ///////////////////////////
 
+cityQuery.addEventListener('submit', findCity);
+likeButton.addEventListener('click', render);
 
 
 function findCity() {
     const cityName = document.querySelector('.search-input').value;
     const urlWeather = `${serverUrlWeather}?q=${cityName}&appid=${apiKey}`; 
-    const urlForecast = `${serverUrlForecast}?q=${cityName}&appid=${apiKey}`; 
 
     fetch(urlWeather)
     .then(responce => responce.json())
@@ -56,18 +53,20 @@ function findCity() {
             alert('Введите название города!');
             throw new Error('Ошибка сервера №400');
         } else {
-            cityNow.textContent = weatherNow.name;  
+            cityNow.textContent = weatherNow.name;
             list.push(weatherNow);
             searchInput.value = clearInput;
+            // + отобразить температуру города
         }
     })
     .catch(console.error);
 
-    findForecast(urlForecast)
+    findForecast(cityName)
 }
 
 
-function findForecast(urlForecast){
+function findForecast(cityName){
+    const urlForecast = `${serverUrlForecast}?q=${cityName}&appid=${apiKey}`; 
 
     fetch(urlForecast)
     .then(responce => responce.json())
@@ -311,16 +310,17 @@ showSavedParavetres()
 
 
 // Функция проверка
+// checkStorage()
 
-// let check = document.querySelector('.added-citys_title');
-// function checkStorage() {
-//     console.log(localStorage);
-//     console.log(list);
+let check = document.querySelector('.added-citys_title');
+function checkStorage() {
+    // console.log(localStorage);
+    // console.log(list);
     // console.log(lastCheckedCity);
     // console.log(listForecast);
     // console.log(lastCheckedForecast);
     // localStorage.clear()
-// }
-// check.addEventListener('click', checkStorage);
+}
+check.addEventListener('click', checkStorage);
 
 
