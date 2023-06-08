@@ -1,11 +1,13 @@
-import { format } from 'date-fns'
+// import { format } from 'date-fns'
 
+
+/*
 let list = [];
 let lastCheckedCity = [];
 let listForecast = [];
 let lastCheckedForecast = [];
+*/
 
-// Список городов хварнить в Set()
 
 // Хранилище имен (Модуль)
 const cityNow = document.querySelector('.city-now');
@@ -30,11 +32,16 @@ let searchInput = document.querySelector('.search-input');
 let likeButton = document.querySelector('.like-img');
 ///////////////////////////
 
-cityQuery.addEventListener('submit', findCity);
-likeButton.addEventListener('click', render);
+
+let list = [];  // поместить название 1го города после Fetch запроса
+let favouriteCities = []; // сохранить список названий городов в Локалсторадже
+let lastCheckedCity = [];  // сохранить название 1го города в Локалсторадже
+
+// Список городов хварнить в Set()
 
 
-function findCity() {
+likeButton.addEventListener('click', addLocation);
+cityQuery.addEventListener('submit', function () {
     const cityName = document.querySelector('.search-input').value;
     const urlWeather = `${serverUrlWeather}?q=${cityName}&appid=${apiKey}`; 
 
@@ -53,39 +60,43 @@ function findCity() {
             alert('Введите название города!');
             throw new Error('Ошибка сервера №400');
         } else {
-            cityNow.textContent = weatherNow.name;
-            list.push(weatherNow);
-            searchInput.value = clearInput;
-            // + отобразить температуру города
+            list.push(weatherNow.name);
+            showWeatherNow (weatherNow)
         }
     })
     .catch(console.error);
 
-    findForecast(cityName)
+    // findForecast(cityName)
+})
+
+
+function showWeatherNow (weatherNow) {
+    cityNow.textContent = weatherNow.name;
+    temperatureNow.textContent = Math.round(weatherNow.main.temp - 273) + '°';
+    searchInput.value = clearInput;
 }
 
 
+
+
+
+/*
 function findForecast(cityName){
     const urlForecast = `${serverUrlForecast}?q=${cityName}&appid=${apiKey}`; 
 
     fetch(urlForecast)
     .then(responce => responce.json())
     .then(weatherForecast => {
-        if (weatherForecast.cod === '404') {
-            searchInput.value = clearInput;
-            alert('Такого города нет');
-            throw new Error('Ошибка сервера №404');
-        } else if (weatherForecast.cod === 401) {
-            searchInput.value = clearInput;
-            alert('Что то пошло не так');
-            throw new Error('Ошибка сервера №401');
-        } else {
-            listForecast.push(weatherForecast);
-        }
+        listForecast.push(weatherForecast);
     })
     .catch(console.error);
 }
+*/
 
+
+
+
+/*
 function render() {
     clearOldCitys()
     clearOldForecast()
@@ -93,8 +104,10 @@ function render() {
     addListStorage()
     addForecastStorage()
 }
+*/
 
 
+/*
 function clearOldCitys() {  
     let deleteOldCitys = document.querySelectorAll('.added-city_container'); 
     if (deleteOldCitys) {
@@ -103,7 +116,9 @@ function clearOldCitys() {
         return
     }
 }
+*/
 
+/*
 function clearOldForecast() {  
     let deleteOldForecast = document.querySelectorAll('.forecast-parametres'); 
     if (deleteOldForecast) {
@@ -112,73 +127,95 @@ function clearOldForecast() {
         return
     }
 }
+*/
+
 
 
 function addLocation() {    
 
-    for (let i=0; i<list.length; i++) {
 
-        // Добавить город справа
-        const newCityContainer = document.createElement('div');
-        parentCitysContainer.appendChild(newCityContainer);
-        newCityContainer.classList.add('added-city_container');
+    favouriteCities.push(list[list.length - 1]);
 
-        newCityContainer.innerHTML = '<svg class="img-delete-city" width="24" height="24"><path d="M12 12.293l5.657-5.657a.5.5 0 0 1 .707.707L12.707 13l5.657 5.657a.5.5 0 1 1-.707.707L12 13.707l-5.657 5.657a.5.5 0 1 1-.707-.707L11.293 13 5.636 7.343a.5.5 0 1 1 .707-.707L12 12.293z" fill="#979797"/></svg>';
+    for (let i=0; i<favouriteCities.length; i++) {
 
-        const newCityName = document.createElement('p');
-        newCityContainer.appendChild(newCityName);
-        newCityName.textContent = list[i].name;
-        newCityName.classList.add('added-city_name');
-
-        // Кнопка удалить
-        let buttonDelete = document.createElement('button');
-        buttonDelete.classList.add('button-delete');
-        newCityContainer.appendChild(buttonDelete);
-
-        buttonDelete.addEventListener('click', () => {
-            let indexListCity = list.findIndex(indexCity => indexCity.name ===  newCityName.textContent);
-            let deleteObjectCity = list.splice(indexListCity, 1);
-
-            let indexlistForecast = listForecast.findIndex(listForecast => listForecast.name ===  newCityName.textContent);
-            let deleteObjectForecast = listForecast.splice(indexlistForecast, 1);
-
-            render()
-        });
+        let cityName = favouriteCities[i];
+        const urlWeather = `${serverUrlWeather}?q=${cityName}&appid=${apiKey}`; 
+    
+        fetch(urlWeather)
+            .then(responce => responce.json())
+            .then(weatherNow => {
+             showWeatherNow (weatherNow)
 
 
-        // Отобразить параметры по клику на город страва
-        newCityName.addEventListener('click', function() {
+            // Добавить город справа
+            const newCityContainer = document.createElement('div');
+            parentCitysContainer.appendChild(newCityContainer);
+            newCityContainer.classList.add('added-city_container');
 
-            cityNow.textContent = list[i].name;
-            temperatureNow.textContent = Math.round(list[i].main.temp - 273) + '°';
+            newCityContainer.innerHTML = '<svg class="img-delete-city" width="24" height="24"><path d="M12 12.293l5.657-5.657a.5.5 0 0 1 .707.707L12.707 13l5.657 5.657a.5.5 0 1 1-.707.707L12 13.707l-5.657 5.657a.5.5 0 1 1-.707-.707L11.293 13 5.636 7.343a.5.5 0 1 1 .707-.707L12 12.293z" fill="#979797"/></svg>';
 
-            lastCheckedCity.push(list[i]);
-            lastCheckedForecast.push(listForecast[i]);
+            const newCityName = document.createElement('p');
+            newCityContainer.appendChild(newCityName);
+            newCityName.textContent = weatherNow.name;   // тут используется старый массив "list"!!!!!
+            newCityName.classList.add('added-city_name');
 
-            // Таб с деталями
-            detailsTitle.textContent = lastCheckedCity[lastCheckedCity.length - 1].name;
-            parameterTemperature.textContent = `Temperature: ${Math.round(lastCheckedCity[lastCheckedCity.length - 1].main.temp - 273) + '°'}`;
-            parameterFeelsLike.textContent = `Feels like: ${Math.round(lastCheckedCity[lastCheckedCity.length - 1].main.feels_like  - 273) + '°'}`;
-            parameterWeather.textContent = `Weather: ${lastCheckedCity[lastCheckedCity.length - 1].weather[0].description}`;
+            // Кнопка удалить
+            let buttonDelete = document.createElement('button');
+            buttonDelete.classList.add('button-delete');
+            newCityContainer.appendChild(buttonDelete);
 
-            let sunriseTime = lastCheckedCity[lastCheckedCity.length - 1].sys.sunrise;
-            let sunriseConverted =  format(new Date(1000 * sunriseTime), 'kk:mm');
-            parameterSunrise.textContent = `Sunset: ${sunriseConverted}`;
 
-            let sunsetTime = lastCheckedCity[lastCheckedCity.length - 1].sys.sunset;
-            let sunsetConverted = format(new Date(1000 * sunsetTime), 'kk:mm');
-            parameterSunset.textContent = `Sunset: ${sunsetConverted}`;
 
-            addCheckedStorage()
-            addCheckedForecast()   
-            clearOldForecast()         
-            showForecast()
-        });
+
+        })
+
+        // buttonDelete.addEventListener('click', () => {
+        //     let indexListCity = list.findIndex(indexCity => indexCity.name ===  newCityName.textContent);    // тут используется старый массив "list"!!!!!
+        //     let deleteObjectCity = list.splice(indexListCity, 1);    // тут используется старый массив "list"!!!!!
+
+        //     let indexlistForecast = listForecast.findIndex(listForecast => listForecast.name ===  newCityName.textContent); // тут используется старый массив "listForecast"!!!!!
+        //     let deleteObjectForecast = listForecast.splice(indexlistForecast, 1); // тут используется старый массив "listForecast"!!!!!
+
+        //     render()
+        // });
+
+
+        // // Отобразить параметры по клику на город страва
+        // newCityName.addEventListener('click', function() {
+
+        //     cityNow.textContent = list[i].name;
+        //     temperatureNow.textContent = Math.round(list[i].main.temp - 273) + '°';
+
+        //     lastCheckedCity.push(list[i]);
+        //     lastCheckedForecast.push(listForecast[i]);
+
+        //     // Таб с деталями
+        //     detailsTitle.textContent = lastCheckedCity[lastCheckedCity.length - 1].name;
+        //     parameterTemperature.textContent = `Temperature: ${Math.round(lastCheckedCity[lastCheckedCity.length - 1].main.temp - 273) + '°'}`;
+        //     parameterFeelsLike.textContent = `Feels like: ${Math.round(lastCheckedCity[lastCheckedCity.length - 1].main.feels_like  - 273) + '°'}`;
+        //     parameterWeather.textContent = `Weather: ${lastCheckedCity[lastCheckedCity.length - 1].weather[0].description}`;
+
+        //     let sunriseTime = lastCheckedCity[lastCheckedCity.length - 1].sys.sunrise;
+        //     let sunriseConverted =  format(new Date(1000 * sunriseTime), 'kk:mm');
+        //     parameterSunrise.textContent = `Sunset: ${sunriseConverted}`;
+
+        //     let sunsetTime = lastCheckedCity[lastCheckedCity.length - 1].sys.sunset;
+        //     let sunsetConverted = format(new Date(1000 * sunsetTime), 'kk:mm');
+        //     parameterSunset.textContent = `Sunset: ${sunsetConverted}`;
+
+        //     addCheckedStorage()
+        //     addCheckedForecast()   
+        //     clearOldForecast()         
+        //     showForecast()
+        // });
     }
+
+
 }
 
 
 
+/*
 function showForecast() {
 
     for (let repeat = 0; repeat < 40; repeat++) {
@@ -233,25 +270,33 @@ function showForecast() {
     feelsLike.textContent = `Feels like: ${Math.round(lastCheckedForecast[lastCheckedForecast.length - 1].list[repeat].main.feels_like - 273) + '°'}`; 
     }
 }
+*/
 
+/*
 function addListStorage() {
     localStorage.setItem("list", JSON.stringify(list)); 
 }
+*/
 
+/*
 function addForecastStorage() {
     localStorage.setItem("listForecast", JSON.stringify(listForecast)); 
 }
+*/
 
+/*
 function addCheckedStorage() {
     localStorage.setItem("lastCheckedCity", JSON.stringify(lastCheckedCity));
 }
+*/
 
+/*
 function addCheckedForecast() {
     localStorage.setItem("lastCheckedForecast", JSON.stringify(lastCheckedForecast));
 }
+*/
 
-
-
+/*
 function showSavedParavetres() {
 
     lastCheckedCity = JSON.parse(localStorage.getItem("lastCheckedCity"));
@@ -304,20 +349,33 @@ function showSavedParavetres() {
         return
     }
 }
+*/
 
-
+/*
 showSavedParavetres()
+*/
+
+
+
+
+
+
+
+
+
 
 
 // Функция проверка
 // checkStorage()
 
+
+
 let check = document.querySelector('.added-citys_title');
 function checkStorage() {
     // console.log(localStorage);
     // console.log(list);
+    console.log(favouriteCities);
     // console.log(lastCheckedCity);
-    // console.log(listForecast);
     // console.log(lastCheckedForecast);
     // localStorage.clear()
 }
