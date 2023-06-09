@@ -131,12 +131,11 @@ function clearOldForecast() {
 
 
 
-function addLocation() {    
-
+function addLocation() {
 
     favouriteCities.push(list[list.length - 1]);
 
-    for (let i=0; i<favouriteCities.length; i++) {
+    for (let i = 0; i < favouriteCities.length; i++) {
 
         let cityName = favouriteCities[i];
         const urlWeather = `${serverUrlWeather}?q=${cityName}&appid=${apiKey}`; 
@@ -144,10 +143,10 @@ function addLocation() {
         fetch(urlWeather)
             .then(responce => responce.json())
             .then(weatherNow => {
-             showWeatherNow (weatherNow)
 
+            showWeatherNow(weatherNow)
 
-            // Добавить город справа
+            // Добавить город в список избранных
             const newCityContainer = document.createElement('div');
             parentCitysContainer.appendChild(newCityContainer);
             newCityContainer.classList.add('added-city_container');
@@ -156,7 +155,7 @@ function addLocation() {
 
             const newCityName = document.createElement('p');
             newCityContainer.appendChild(newCityName);
-            newCityName.textContent = weatherNow.name;   // тут используется старый массив "list"!!!!!
+            newCityName.textContent = weatherNow.name;
             newCityName.classList.add('added-city_name');
 
             // Кнопка удалить
@@ -165,19 +164,20 @@ function addLocation() {
             newCityContainer.appendChild(buttonDelete);
 
 
-
+            buttonDelete.addEventListener('click', () => {
+                alert('hu')
+                // let indexListCity = list.findIndex(indexCity => indexCity.name ===  newCityName.textContent);    // тут используется старый массив "list"!!!!!
+                // let deleteObjectCity = list.splice(indexListCity, 1);    // тут используется старый массив "list"!!!!!
+    
+                // let indexlistForecast = listForecast.findIndex(listForecast => listForecast.name ===  newCityName.textContent); // тут используется старый массив "listForecast"!!!!!
+                // let deleteObjectForecast = listForecast.splice(indexlistForecast, 1); // тут используется старый массив "listForecast"!!!!!
+    
+                // render()
+            });
 
         })
 
-        // buttonDelete.addEventListener('click', () => {
-        //     let indexListCity = list.findIndex(indexCity => indexCity.name ===  newCityName.textContent);    // тут используется старый массив "list"!!!!!
-        //     let deleteObjectCity = list.splice(indexListCity, 1);    // тут используется старый массив "list"!!!!!
 
-        //     let indexlistForecast = listForecast.findIndex(listForecast => listForecast.name ===  newCityName.textContent); // тут используется старый массив "listForecast"!!!!!
-        //     let deleteObjectForecast = listForecast.splice(indexlistForecast, 1); // тут используется старый массив "listForecast"!!!!!
-
-        //     render()
-        // });
 
 
         // // Отобразить параметры по клику на город страва
