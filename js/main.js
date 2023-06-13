@@ -1,12 +1,5 @@
 import { format } from 'date-fns'
 
-/*
-let list = [];
-let lastCheckedCity = [];
-let listForecast = [];
-let lastCheckedForecast = [];
-*/
-
 // Хранилище имен (Модуль)
 const cityNow = document.querySelector('.city-now');
 const apiKey = 'f660a2fb1e4bad108d6160b7f58c555f';
@@ -35,11 +28,17 @@ let list = [];
 let favouriteCities = new Set();
 let lastCheckedCity = [];
 
-// Список городов хварнить в Set()
 
-likeButton.addEventListener('click', render);
+
+
+likeButton.addEventListener('click', () => {
+    favouriteCities.add(list[list.length-1]);
+});
+
+likeButton.addEventListener('click', renderCityList);
+
 cityQuery.addEventListener('submit', () => {
-    const cityName = document.querySelector('.search-input').value;
+    let cityName = document.querySelector('.search-input').value;
     const urlWeather = `${serverUrlWeather}?q=${cityName}&appid=${apiKey}`; 
 
     fetch(urlWeather)
@@ -58,12 +57,11 @@ cityQuery.addEventListener('submit', () => {
             throw new Error('Ошибка сервера №400');
         } else {
             list.push(weatherNow.name);
-            showWeatherNow (weatherNow)
+            showWeatherNow(weatherNow)
         }
     })
     .catch(console.error);
 
-    // findForecast(cityName)
 })
 
 
@@ -74,28 +72,38 @@ function showWeatherNow(weatherNow) {
 }
 
 
-/*
-function findForecast(cityName){
+// function showWeatherNow(weatherNow) {
+//     cityNow.textContent = weatherNow.name;
+//     temperatureNow.textContent = Math.round(weatherNow.main.temp - 273) + '°';
+//     searchInput.value = clearInput;
+// }
+
+
+
+function findForecast(){
+    cityName = lastCheckedCity[lastCheckedCity.length - 1];
     const urlForecast = `${serverUrlForecast}?q=${cityName}&appid=${apiKey}`; 
 
     fetch(urlForecast)
     .then(responce => responce.json())
     .then(weatherForecast => {
-        listForecast.push(weatherForecast);
+        showForecast(weatherForecast)
     })
     .catch(console.error);
 }
-*/
 
 
-function render() {
+
+function renderCityList() {
     clearOldCitys()
-    // clearOldForecast()
     addLocation()
-    // addListStorage()
-    // addForecastStorage()
 }
 
+
+function renderForecast() {
+    clearOldForecast()
+    findForecast()
+}
 
 
 function clearOldCitys() {  
@@ -108,7 +116,7 @@ function clearOldCitys() {
 }
 
 
-/*
+
 function clearOldForecast() {  
     let deleteOldForecast = document.querySelectorAll('.forecast-parametres'); 
     if (deleteOldForecast) {
@@ -117,13 +125,13 @@ function clearOldForecast() {
         return
     }
 }
-*/
+
 
 
 async function addLocation() {
 
-    favouriteCities.add(list[list.length-1]);
     let arrayFavouriteCities = Array.from(favouriteCities);
+    addFavouriteStorage(arrayFavouriteCities)
 
     for (let i = 0; i < arrayFavouriteCities.length; i++) {
 
@@ -154,32 +162,13 @@ async function addLocation() {
 
 
         buttonDelete.addEventListener('click', () => {
-
-            // const newFavouriteCities = arrayFavouriteCities.filter(indexCity => indexCity !=  newCityName.textContent);
-            // favouriteCities = new Set(newFavouriteCities);
-            
-
-            favouriteCities = new Set(favouriteCities);
-            favouriteCities.delete(newCityName.textContent);
-
-            clearOldCitys()
-            // addLocation()
-            // render()
-
-            // let indexlistForecast = listForecast.findIndex(listForecast => listForecast.name ===  newCityName.textContent); // тут используется старый массив "listForecast"!!!!!
-            // let deleteObjectForecast = listForecast.splice(indexlistForecast, 1); // тут используется старый массив "listForecast"!!!!!
-
+            favouriteCities.delete(arrayFavouriteCities[i]);
+            renderCityList()           
         });
 
 
-
-
-
-
-        // Отобразить параметры по клику на город страва
+        // Отобразить параметры по клику на избранный город
         newCityName.addEventListener('click', () => {
-
-            showWeatherNow(weatherNow)
 
             
             // lastCheckedCity.push(list[i]);
@@ -199,73 +188,96 @@ async function addLocation() {
             let sunsetConverted = format(new Date(1000 * sunsetTime), 'kk:mm');
             parameterSunset.textContent = `Sunset: ${sunsetConverted}`;
 
+            lastCheckedCity.push(weatherNow.name);
+
+            addCheckedStorage(lastCheckedCity)
+            showWeatherNow(weatherNow)
+            renderForecast()
+
             // addCheckedStorage()
-            // addCheckedForecast()   
-            // clearOldForecast()         
-            // showForecast()
-        });
-    
+            // addCheckedForecast()
+            
+        });    
     }
 }
 
 
 
-/*
-function showForecast() {
+
+function showForecast(weatherForecast) {
 
     for (let repeat = 0; repeat < 40; repeat++) {
 
-    forecastTitle.textContent = lastCheckedForecast[lastCheckedForecast.length - 1].city.name; 
+        forecastTitle.textContent = weatherForecast.city.name;
 
-    const forecastParametres = document.createElement('div');
-    forecastParent.appendChild(forecastParametres);
-    forecastParametres.classList.add('forecast-parametres'); 
+        const forecastParametres = document.createElement('div');
+        forecastParent.appendChild(forecastParametres);
+        forecastParametres.classList.add('forecast-parametres'); 
 
-    const forecastDate = document.createElement('div');
-    forecastParametres.appendChild(forecastDate);
-    forecastDate.classList.add('forecast-date');
+        const forecastDate = document.createElement('div');
+        forecastParametres.appendChild(forecastDate);
+        forecastDate.classList.add('forecast-date');
 
-    const futureDate = document.createElement('span');
-    forecastDate.appendChild(futureDate);
-    futureDate.classList.add('future-date');
+        const futureDate = document.createElement('span');
+        forecastDate.appendChild(futureDate);
+        futureDate.classList.add('future-date');
 
-    const futureforecastDate = lastCheckedForecast[lastCheckedForecast.length - 1].list[repeat].dt; 
-    const futureDateConverted = format(new Date(1000 * futureforecastDate), 'd MMMM');
-    futureDate.textContent = futureDateConverted;
+        const futureforecastDate = weatherForecast.list[repeat].dt; 
+        const futureDateConverted = format(new Date(1000 * futureforecastDate), 'd MMMM');
+        futureDate.textContent = futureDateConverted;
 
-    const futureTime = document.createElement('span');
-    forecastDate.appendChild(futureTime);
-    futureTime.classList.add('future-time');
+        const futureTime = document.createElement('span');
+        forecastDate.appendChild(futureTime);
+        futureTime.classList.add('future-time');
 
-    const futureTimeConverted = format(new Date(1000 * futureforecastDate), 'kk:mm');;
-    futureTime.textContent = futureTimeConverted;
+        const futureTimeConverted = format(new Date(1000 * futureforecastDate), 'kk:mm');;
+        futureTime.textContent = futureTimeConverted;
 
-    const forecastTemperaturePrecipitation = document.createElement('div');
-    forecastParametres.appendChild(forecastTemperaturePrecipitation);
-    forecastTemperaturePrecipitation.classList.add('forecast-temperature-precipitation');
+        const forecastTemperaturePrecipitation = document.createElement('div');
+        forecastParametres.appendChild(forecastTemperaturePrecipitation);
+        forecastTemperaturePrecipitation.classList.add('forecast-temperature-precipitation');
 
-    const forecastTemperature = document.createElement('span');
-    forecastTemperaturePrecipitation.appendChild(forecastTemperature);
-    forecastTemperature.classList.add('forecast-temperature');
-    forecastTemperature.textContent = `Temperature: ${Math.round(lastCheckedForecast[lastCheckedForecast.length - 1].list[repeat].main.temp - 273) + '°'}`; 
+        const forecastTemperature = document.createElement('span');
+        forecastTemperaturePrecipitation.appendChild(forecastTemperature);
+        forecastTemperature.classList.add('forecast-temperature');
+        forecastTemperature.textContent = `Temperature: ${Math.round(weatherForecast.list[repeat].main.temp - 273) + '°'}`; 
 
-    const forecastPrecipitation = document.createElement('span');
-    forecastTemperaturePrecipitation.appendChild(forecastPrecipitation);
-    forecastPrecipitation.classList.add('forecast-precipitation');
-    forecastPrecipitation.textContent = lastCheckedForecast[lastCheckedForecast.length - 1].list[repeat].weather[0].main; 
+        const forecastPrecipitation = document.createElement('span');
+        forecastTemperaturePrecipitation.appendChild(forecastPrecipitation);
+        forecastPrecipitation.classList.add('forecast-precipitation');
+        forecastPrecipitation.textContent = weatherForecast.list[repeat].weather[0].main; 
 
 
-    const forecastFeelsLike = document.createElement('div');
-    forecastParametres.appendChild(forecastFeelsLike);
-    forecastFeelsLike.classList.add('forecast-feels-like');
+        const forecastFeelsLike = document.createElement('div');
+        forecastParametres.appendChild(forecastFeelsLike);
+        forecastFeelsLike.classList.add('forecast-feels-like');
 
-    const feelsLike = document.createElement('span');
-    forecastFeelsLike.appendChild(feelsLike);
-    feelsLike.classList.add('feels-like');
-    feelsLike.textContent = `Feels like: ${Math.round(lastCheckedForecast[lastCheckedForecast.length - 1].list[repeat].main.feels_like - 273) + '°'}`; 
+        const feelsLike = document.createElement('span');
+        forecastFeelsLike.appendChild(feelsLike);
+        feelsLike.classList.add('feels-like');
+        feelsLike.textContent = `Feels like: ${Math.round(weatherForecast.list[repeat].main.feels_like - 273) + '°'}`; 
     }
 }
-*/
+
+
+function addFavouriteStorage(arrayFavouriteCities) {
+    localStorage.setItem("arrayFavouriteCities", JSON.stringify(arrayFavouriteCities));
+}
+
+function addCheckedStorage(lastCheckedCity) {
+    localStorage.setItem("lastCheckedCity", JSON.stringify(lastCheckedCity[lastCheckedCity.length - 1])); 
+}
+
+
+
+function showSavedParavetres() {
+    let arrayFavouriteCities = JSON.parse(localStorage.getItem("arrayFavouriteCities"));
+    favouriteCities = new Set(arrayFavouriteCities);
+    renderCityList()
+}
+
+showSavedParavetres()
+
 
 /*
 function addListStorage() {
@@ -361,19 +373,14 @@ showSavedParavetres()
 
 
 // Функция проверка
-// checkStorage()
-
-
 
 let check = document.querySelector('.added-citys_title');
-function checkStorage() {
-    // console.log(localStorage);
+function checkAnything() {
     // console.log(list);
-    console.log(favouriteCities);
+    // console.log(favouriteCities);
+    // console.log(arrayFavouriteCities)
     // console.log(lastCheckedCity);
-    // console.log(lastCheckedForecast);
+    console.log(localStorage);
     // localStorage.clear()
 }
-check.addEventListener('click', checkStorage);
-
-
+check.addEventListener('click', checkAnything);
