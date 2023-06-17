@@ -24,9 +24,9 @@ const likeButton = document.querySelector('.like-img');
 ///////////////////////////
 
 
-let list = [];
+const list = [];
 let favouriteCities = new Set();
-let lastCheckedCity = [];
+const lastCheckedCity = [];
 
 
 likeButton.addEventListener('click', () => {
@@ -125,7 +125,6 @@ function showWeatherDetails(weatherNow) {
 }
 
 
-
 function renderCityList() {
     clearOldCitys()
     addLocation()
@@ -139,7 +138,7 @@ function renderForecast() {
 function clearOldCitys() {  
     let deleteOldCitys = document.querySelectorAll('.added-city_container'); 
     if (deleteOldCitys) {
-        deleteOldCitys.forEach(OldCitys => OldCitys.remove());
+        deleteOldCitys.forEach(OldCitys => OldCitys.remove()); 
     } else {
         return
     }
@@ -268,29 +267,28 @@ function addCheckedStorage(lastCheckedCity) {
     localStorage.setItem("lastCheckedCity", JSON.stringify(lastCheckedCity[lastCheckedCity.length - 1])); 
 }
 
-
 function showSavedParavetres() {
     let storageFavouriteCities = JSON.parse(localStorage.getItem("arrayFavouriteCities"));
     favouriteCities = new Set(storageFavouriteCities);
 
     let storageCheckedCity = JSON.parse(localStorage.getItem("lastCheckedCity"));
     lastCheckedCity.push(storageCheckedCity);
-    
-    renderCityList()
-    findLastCity()
-    findSavedForecast()
+
+    if (favouriteCities.size != 0) {
+        renderCityList()
+    } else if (lastCheckedCity[0] != null) {
+        findSavedForecast()
+        findLastCity()
+    }
 }
 
 showSavedParavetres()
 
 
-
-
 // Функция проверка
-// let check = document.querySelector('.added-citys_title');
+// const check = document.querySelector('.added-citys_title');
 // function checkAnything() {
     // console.log(list);
-    // console.log(arrayFavouriteCities)
     // console.log(lastCheckedCity);
     // console.log(favouriteCities);
     // console.log(localStorage);
